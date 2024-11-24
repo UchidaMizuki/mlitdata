@@ -8,12 +8,20 @@
 
 The goal of mlitdata is to …
 
+## Credits
+
+- In Japanese: **「このサービスは、国土交通データプラットフォームの API
+  機能を使用していますが、最新のデータを保証するものではありません。」**
+- In English: **“This service uses the API functionality of the MLIT
+  Data Platform, but does not guarantee up-to-date data.”**
+
 ## Installation
 
 You can install the development version of mlitdata like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+# install.packages("devtools")
+devtools::install_github("UchidaMizuki/mlitdata")
 ```
 
 ## Example
