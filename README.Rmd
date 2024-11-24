@@ -1,0 +1,43 @@
+---
+output: 
+  github_document:
+    df_print: kable
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# mlitdata
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of mlitdata is to ...
+
+## Installation
+
+You can install the development version of mlitdata like so:
+
+``` r
+# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(mlitdata)
+
+mlitdata_catalog()
+mlitdata_catalog("ipf",
+                 dataset_fields = c("id", "title"))
+```
