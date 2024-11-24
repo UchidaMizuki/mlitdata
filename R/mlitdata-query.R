@@ -31,7 +31,7 @@ new_mlitdata_query_fields <- function(fields) {
 #' @param ... The fields of the query.
 #' @param .args The arguments of the query.
 #'
-#' @return A `mlitdata_query` object.
+#' @return An `mlitdata_query` object.
 #'
 #' @export
 mlitdata_query <- function(.name, ...,
