@@ -8,6 +8,9 @@ new_mlitdata_query <- function(name,
 }
 
 new_mlitdata_query_args <- function(args) {
+  args <- args |>
+    purrr::discard(is.null)
+
   if (rlang::is_empty(args)) {
     NULL
   } else {
@@ -37,7 +40,6 @@ new_mlitdata_query_fields <- function(fields) {
 mlitdata_query <- function(.name, ...,
                            .args = NULL) {
   fields <- rlang::list2(...) |>
-    purrr::compact() |>
     purrr::map(\(value) {
       if (inherits(value, "mlitdata_query")) {
         list(value)

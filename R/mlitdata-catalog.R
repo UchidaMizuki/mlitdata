@@ -41,7 +41,39 @@ mlitdata_catalog <- function(catalog_id = NULL,
                                   dataset_fields = dataset_fields,
                                   datatype_fields = datatype_fields,
                                   attribute_fields = attribute_fields)
+  mlitdata_catalog_get(query = query,
+                       setup = setup,
+                       catalog_fields = catalog_fields,
+                       dataset_fields = dataset_fields,
+                       datatype_fields = datatype_fields,
+                       attribute_fields = attribute_fields)
+}
 
+mlitdata_catalog_query <- function(catalog_id = NULL,
+                                   catalog_fields = c("id", "title"),
+                                   dataset_fields = NULL,
+                                   datatype_fields = NULL,
+                                   attribute_fields = NULL) {
+  query_attribute <- mlitdata_query("attributes",
+                                    attribute_fields)
+  query_datatype <- mlitdata_query("datatype_desc",
+                                   datatype_fields,
+                                   query_attribute)
+  query_dataset <- mlitdata_query("datasets",
+                                  dataset_fields,
+                                  query_datatype)
+  mlitdata_query("dataCatalog",
+                 .args = list(IDs = as.list(catalog_id)),
+                 catalog_fields,
+                 query_dataset)
+}
+
+mlitdata_catalog_get <- function(query,
+                                 setup,
+                                 catalog_fields,
+                                 dataset_fields,
+                                 datatype_fields,
+                                 attribute_fields) {
   # catalog
   out <- mlitdata_get(query = query,
                       setup = setup) |>
@@ -79,23 +111,4 @@ mlitdata_catalog <- function(catalog_id = NULL,
     unnest_wider_prefix_fields("attributes",
                                prefix = "attribute",
                                fields = attribute_fields)
-}
-
-mlitdata_catalog_query <- function(catalog_id = NULL,
-                                   catalog_fields = c("id", "title"),
-                                   dataset_fields = NULL,
-                                   datatype_fields = NULL,
-                                   attribute_fields = NULL) {
-  query_attribute <- mlitdata_query("attributes",
-                                    attribute_fields)
-  query_datatype <- mlitdata_query("datatype_desc",
-                                   datatype_fields,
-                                   query_attribute)
-  query_dataset <- mlitdata_query("datasets",
-                                  dataset_fields,
-                                  query_datatype)
-  mlitdata_query("dataCatalog",
-                 .args = list(IDs = as.list(catalog_id)),
-                 catalog_fields,
-                 query_dataset)
 }
