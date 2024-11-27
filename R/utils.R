@@ -23,3 +23,31 @@ encode_string <- function(x,
   encodeString(x,
                quote = quote, ...)
 }
+
+st_as_sf_from_json <- function(data,
+                               sf_column_name) {
+  data <- data |>
+    tibble::rowid_to_column(".rows")
+
+  data_geometry <- data |>
+    dplyr::select(".rows", dplyr::all_of(sf_column_name)) |>
+    dplyr::mutate(!!sf_column_name := .data[[sf_column_name]] |>
+                    purrr::map(\(x) {
+                      if (is.null(x)) {
+                        NULL
+                      } else {
+                        x |>
+                          jsonlite::toJSON(auto_unbox = TRUE) |>
+                          sf::read_sf() |>
+                          sf::st_geometry()
+                      }
+                    })) |>
+    tidyr::unnest_longer(dplyr::all_of(sf_column_name))
+
+  data |>
+    dplyr::select(!dplyr::all_of(sf_column_name)) |>
+    dplyr::left_join(data_geometry,
+                     by = ".rows") |>
+    dplyr::select(!".rows") |>
+    sf::st_as_sf(sf_column_name = sf_column_name)
+}
