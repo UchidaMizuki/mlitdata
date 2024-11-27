@@ -2,9 +2,30 @@ new_mlitdata_query <- function(name,
                                args = NULL,
                                fields = NULL) {
   structure(list(name = name,
-                 args = args,
-                 fields = fields),
+                 args = new_mlitdata_query_args(args),
+                 fields = new_mlitdata_query_fields(fields)),
             class = "mlitdata_query")
+}
+
+new_mlitdata_query_args <- function(args) {
+  args <- args |>
+    purrr::discard(is.null)
+
+  if (rlang::is_empty(args)) {
+    NULL
+  } else {
+    structure(args,
+              class = "mlitdata_query_args")
+  }
+}
+
+new_mlitdata_query_fields <- function(fields) {
+  if (rlang::is_empty(fields)) {
+    NULL
+  } else {
+    structure(fields,
+              class = "mlitdata_query_fields")
+  }
 }
 
 #' Build a query object
@@ -13,13 +34,12 @@ new_mlitdata_query <- function(name,
 #' @param ... The fields of the query.
 #' @param .args The arguments of the query.
 #'
-#' @return A `mlitdata_query` object.
+#' @return An `mlitdata_query` object.
 #'
 #' @export
 mlitdata_query <- function(.name, ...,
                            .args = NULL) {
   fields <- rlang::list2(...) |>
-    purrr::compact() |>
     purrr::map(\(value) {
       if (inherits(value, "mlitdata_query")) {
         list(value)
@@ -53,6 +73,20 @@ as.character.mlitdata_query <- function(x, ...) {
 
 #' @export
 print.mlitdata_query <- function(x, ...) {
+  print_mlitdata_query(x, ...)
+}
+
+#' @export
+print.mlitdata_query_args <- function(x, ...) {
+  print_mlitdata_query(x, ...)
+}
+
+#' @export
+print.mlitdata_query_fields <- function(x, ...) {
+  print_mlitdata_query(x, ...)
+}
+
+print_mlitdata_query <- function(x, ...) {
   writeLines(format(x, ...))
   invisible(x)
 }
@@ -62,6 +96,16 @@ format.mlitdata_query <- function(x, ...) {
   c("{",
     stringr::str_c("  ", format_mlitdata_query(x)),
     "}")
+}
+
+#' @export
+format.mlitdata_query_args <- function(x, ...) {
+  format_mlitdata_query_args(x)
+}
+
+#' @export
+format.mlitdata_query_fields <- function(x, ...) {
+  format_mlitdata_query_fields(x)
 }
 
 format_mlitdata_query <- function(x) {

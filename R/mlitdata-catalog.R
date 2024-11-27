@@ -41,44 +41,12 @@ mlitdata_catalog <- function(catalog_id = NULL,
                                   dataset_fields = dataset_fields,
                                   datatype_fields = datatype_fields,
                                   attribute_fields = attribute_fields)
-
-  # catalog
-  out <- mlitdata_get(query = query,
-                      setup = setup) |>
-    tibble::as_tibble() |>
-    tidyr::unnest_longer("data") |>
-    unnest_wider_prefix_fields("data",
-                               prefix = "catalog",
-                               fields = catalog_fields)
-  if (!"datasets" %in% names(out)) {
-    return(out)
-  }
-
-  # dataset
-  out <- out |>
-    tidyr::unnest_longer("datasets") |>
-    unnest_wider_prefix_fields("datasets",
-                               prefix = "dataset",
-                               fields = dataset_fields)
-  if (!"datatype_desc" %in% names(out)) {
-    return(out)
-  }
-
-  # datatype
-  out <- out |>
-    unnest_wider_prefix_fields("datatype_desc",
-                               prefix = "datatype",
-                               fields = datatype_fields)
-  if (!"attributes" %in% names(out)) {
-    return(out)
-  }
-
-  # attribute
-  out |>
-    tidyr::unnest_longer("attributes") |>
-    unnest_wider_prefix_fields("attributes",
-                               prefix = "attribute",
-                               fields = attribute_fields)
+  mlitdata_catalog_get(query = query,
+                       setup = setup,
+                       catalog_fields = catalog_fields,
+                       dataset_fields = dataset_fields,
+                       datatype_fields = datatype_fields,
+                       attribute_fields = attribute_fields)
 }
 
 mlitdata_catalog_query <- function(catalog_id = NULL,
@@ -98,4 +66,49 @@ mlitdata_catalog_query <- function(catalog_id = NULL,
                  .args = list(IDs = as.list(catalog_id)),
                  catalog_fields,
                  query_dataset)
+}
+
+mlitdata_catalog_get <- function(query,
+                                 setup,
+                                 catalog_fields,
+                                 dataset_fields,
+                                 datatype_fields,
+                                 attribute_fields) {
+  # catalog
+  data <- mlitdata_get(query = query,
+                      setup = setup) |>
+    purrr::chuck("data") |>
+    tibble::as_tibble() |>
+    unnest_wider_prefix_fields("dataCatalog",
+                               prefix = "catalog",
+                               fields = catalog_fields)
+  if (!"datasets" %in% names(data)) {
+    return(data)
+  }
+
+  # dataset
+  data <- data |>
+    tidyr::unnest_longer("datasets") |>
+    unnest_wider_prefix_fields("datasets",
+                               prefix = "dataset",
+                               fields = dataset_fields)
+  if (!"datatype_desc" %in% names(data)) {
+    return(data)
+  }
+
+  # datatype
+  data <- data |>
+    unnest_wider_prefix_fields("datatype_desc",
+                               prefix = "datatype",
+                               fields = datatype_fields)
+  if (!"attributes" %in% names(data)) {
+    return(data)
+  }
+
+  # attribute
+  data |>
+    tidyr::unnest_longer("attributes") |>
+    unnest_wider_prefix_fields("attributes",
+                               prefix = "attribute",
+                               fields = attribute_fields)
 }

@@ -18,13 +18,14 @@ mlitdata_catalog(
 \item{catalog_id}{A character vector of catalog IDs. If NULL, all catalogs
 are returned.}
 
-\item{catalog_fields}{A character vector of fields in the data catalog.}
+\item{catalog_fields}{A character vector or a list of fields in the catalog.}
 
-\item{dataset_fields}{A character vector of fields in the dataset info.}
+\item{dataset_fields}{A character vector or a list of fields in the dataset.}
 
-\item{datatype_fields}{A character vector of fields in the data type.}
+\item{datatype_fields}{A character vector or a list of fields in the
+datatype.}
 
-\item{attribute_fields}{A character vector of fields in the data
+\item{attribute_fields}{A character vector or a list of fields in the
 attribute.}
 
 \item{path}{A character vector of the path to the API. By default,
@@ -47,8 +48,9 @@ mlitdata_catalog(catalog_id = c("ipf", "nlni_ksj"),
 mlitdata_catalog(catalog_id = c("ipf", "nlni_ksj"),
                  dataset_fields = c("id", "title"),
                  attribute_fields = c("name", "display_name"))
-mlitdata_catalog(dataset_fields = list(id = "",
-                                       contactPoint = "fullname"))
+mlitdata_catalog(dataset_fields = list("id",
+                                       mlitdata_query("contactPoint",
+                                                      "fullname")))
 }
 
 }

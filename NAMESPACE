@@ -2,7 +2,13 @@
 
 S3method(as.character,mlitdata_query)
 S3method(format,mlitdata_query)
+S3method(format,mlitdata_query_args)
+S3method(format,mlitdata_query_fields)
 S3method(print,mlitdata_query)
+S3method(print,mlitdata_query_args)
+S3method(print,mlitdata_query_fields)
+export(mlitdata_attribute_filter)
 export(mlitdata_catalog)
+export(mlitdata_location_filter)
 export(mlitdata_query)
 importFrom(rlang,":=")

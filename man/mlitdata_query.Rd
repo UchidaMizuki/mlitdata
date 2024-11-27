@@ -14,7 +14,7 @@ mlitdata_query(.name, ..., .args = NULL)
 \item{.args}{The arguments of the query.}
 }
 \value{
-A \code{mlitdata_query} object.
+An \code{mlitdata_query} object.
 }
 \description{
 Build a query object
